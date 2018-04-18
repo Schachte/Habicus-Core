@@ -1,4 +1,4 @@
-package com.remindful.core.user;
+package com.habicus.core.user;
 
 public abstract class UserDecorator implements User {
   User user;

@@ -1,4 +1,4 @@
-package com.remindful.core;
+package com.habicus.core;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
