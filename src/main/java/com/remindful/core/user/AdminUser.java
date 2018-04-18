@@ -2,6 +2,10 @@ package com.remindful.core.user;
 
 public class AdminUser extends UserDecorator {
 
+  public AdminUser(User user) {
+    super(user);
+  }
+
   @Override
   public boolean updateEmail(String email) {
     return false;
