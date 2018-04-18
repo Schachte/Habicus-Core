@@ -1,6 +1,10 @@
-package com.remindful.core.user;
+package com.habicus.core.user;
 
-public class StandardUser implements User {
+public class AdminUser extends UserDecorator {
+
+  public AdminUser(User user) {
+    super(user);
+  }
 
   @Override
   public boolean updateEmail(String email) {

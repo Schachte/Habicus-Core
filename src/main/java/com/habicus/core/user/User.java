@@ -1,4 +1,4 @@
-package com.remindful.core.user;
+package com.habicus.core.user;
 
 public interface User {
   boolean updateEmail(String email);
