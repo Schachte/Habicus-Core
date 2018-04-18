@@ -29,10 +29,18 @@ Are you tired of writing down goals only to fail days or weeks later? Habitate i
 
 ## Development setup
 
-```sh
-make install
-npm test
+In order to get the server running, run the following command:
 ```
+gradle -Dspring.profiles.active=development bootRun
+```
+
+Profiles are currently setup in the application property files in the `resources` directory
+
+## Test Database
+
+The test database runs an embedded H2 database that is dropped on every rebuild. 
+
+You can view the test database at `localhost:7777/h2` and login with the default credentials specified in the application-development.properties file
 
 ## Release History
 
