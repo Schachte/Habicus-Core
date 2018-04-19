@@ -1,6 +1,7 @@
 package com.habicus.repository;
 
 import com.habicus.core.data.UserRepository;
+import com.habicus.repository.DataContainers.UserContainer;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
