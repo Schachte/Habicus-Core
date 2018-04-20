@@ -134,13 +134,7 @@ public class Loader implements ApplicationListener<ApplicationReadyEvent> {
      * save each individual element into the database
      */
     Arrays.stream(resources)
-        .map(this::ingestFromFile)
-        .collect(Collectors.toList())
-        .stream()
-        .map(Container.class::cast)
-        .map(Container::getAll)
-        .flatMap(Collection::stream)
-        .collect(Collectors.toList())
+        .flatMap(r -> ((Container) ingestFromFile(r)).getAll().stream())
         .forEach(
             dataType -> {
               loaderConstants.getRepo(dataType.toString()).save(dataType);
