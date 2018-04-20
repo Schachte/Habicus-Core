@@ -30,8 +30,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class GoalContainer implements Container {
 
-  public GoalContainer() {}
-
   @XmlElement(name = "goal")
   private List<Goal> goals;
 
@@ -39,7 +37,7 @@ public class GoalContainer implements Container {
     return goals;
   }
 
-  public void setUsers(List<Goal> goals) {
+  public void setGoals(List<Goal> goals) {
     this.goals = goals;
   }
 
