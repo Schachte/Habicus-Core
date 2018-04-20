@@ -93,7 +93,7 @@ public class Loader implements ApplicationListener<ApplicationReadyEvent> {
   private Container ingestFromFile(Resource fileResource) {
     if (fileResource == null) {
       LOGGER.log(Level.SEVERE, "File resource is invalid! Process cannot continue.");
-      System.exit(1);
+      System.exit(CoreConstants.SYSTEM_EXIT_ERROR);
     }
 
     try {
