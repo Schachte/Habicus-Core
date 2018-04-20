@@ -1,16 +1,28 @@
+/*
+ * This file is part of the Habicus Core Platform (https://github.com/Habicus/Habicus-Core).
+ * Copyright (c) 2018 Habicus Core
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.habicus.repository;
 
 import static java.lang.Class.*;
 
-import com.habicus.core.data.GoalRepository;
-import com.habicus.core.data.UserRepository;
 import com.habicus.repository.DataContainers.Container;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -22,7 +34,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.*;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 /**
@@ -34,11 +45,9 @@ public class Loader implements ApplicationListener<ApplicationReadyEvent> {
 
   private static final Logger LOGGER = Logger.getLogger(Loader.class.getName());
 
-  Map<String, JpaRepository> reposByName = new HashMap<>();
+  private static final String CONTAINER_PATH = "com.habicus.repository.DataContainers.";
 
-  @Autowired private UserRepository userRepo;
-
-  @Autowired private GoalRepository goalRepo;
+  @Autowired private DataLoaderRegistrar loaderConstants;
 
   /**
    * Strips off any dangling file extensions to enable class cast into file ingestor
@@ -87,10 +96,7 @@ public class Loader implements ApplicationListener<ApplicationReadyEvent> {
 
     try {
       return parseFile(
-          fileResource,
-          forName(
-              "com.habicus.repository.DataContainers."
-                  + normalizeFileName(fileResource.getFilename())));
+          fileResource, forName(CONTAINER_PATH + normalizeFileName(fileResource.getFilename())));
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
@@ -100,10 +106,6 @@ public class Loader implements ApplicationListener<ApplicationReadyEvent> {
   @Override
   public void onApplicationEvent(ApplicationReadyEvent event) {
     LOGGER.log(Level.INFO, "Preparing to load data into database");
-
-    /** BEGIN REPOSITORY MAP HERE */
-    reposByName.put("User", userRepo);
-    reposByName.put("Goal", goalRepo);
 
     try {
       loadTestContainers();
@@ -123,10 +125,17 @@ public class Loader implements ApplicationListener<ApplicationReadyEvent> {
     LOGGER.log(Level.INFO, "User data table being added to database");
     Resource[] resources = retrieveTestDataFiles();
 
-    List<? extends Container> containers =
-        Arrays.stream(resources).map(this::ingestFromFile).collect(Collectors.toList());
-
-    containers
+    /**
+     * Main Persistence Logic:
+     *
+     * <p>Retrieve data from each file in the resources directory and put into a list Iterate
+     * through each item of the list, cast it to a Container object The getAll operation will
+     * retrieve all sub-elements associated with this data type Put all subelements into a list and
+     * save each individual element into the database
+     */
+    Arrays.stream(resources)
+        .map(this::ingestFromFile)
+        .collect(Collectors.toList())
         .stream()
         .map(Container.class::cast)
         .map(Container::getAll)
@@ -134,7 +143,7 @@ public class Loader implements ApplicationListener<ApplicationReadyEvent> {
         .collect(Collectors.toList())
         .forEach(
             dataType -> {
-              reposByName.get(dataType.toString()).save(dataType);
+              loaderConstants.getRepo(dataType.toString()).save(dataType);
               LOGGER.log(Level.INFO, "Saved: " + dataType);
             });
   }
