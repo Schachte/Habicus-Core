@@ -45,6 +45,38 @@ public class Goal {
 
   private String interval;
 
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getAccountability() {
+    return accountability;
+  }
+
+  public void setAccountability(String accountability) {
+    this.accountability = accountability;
+  }
+
+  public String getInterval() {
+    return interval;
+  }
+
+  public void setInterval(String interval) {
+    this.interval = interval;
+  }
+
   @Override
   public String toString() {
     return this.getClass().getSimpleName();

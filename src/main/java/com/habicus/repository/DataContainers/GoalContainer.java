@@ -30,6 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class GoalContainer implements Container {
 
+  public GoalContainer() {}
+
   @XmlElement(name = "goal")
   private List<Goal> goals;
 

@@ -17,14 +17,29 @@
 
 package com.habicus.core.api;
 
+import com.habicus.core.data.GoalRepository;
+import com.habicus.core.data.UserRepository;
+import com.habicus.core.entities.Goal;
+import com.habicus.core.entities.User;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HabicusMain {
+
+  @Autowired
+  UserRepository userRepo;
+
+  @Autowired
+  GoalRepository goalRepo;
+
   @RequestMapping("/")
   public String index() {
     return "Welcome To Habicus!";
   }
+
 }
 

@@ -2,6 +2,18 @@
 <UserContainer>
   <user>
     <username>user_1</username>
+    <goals>
+      <goal>
+        <title>goal title 2</title>
+        <description>
+          Hi, this is my goal description.
+        </description>
+        <accountable>
+          testeruser@gmail.com
+        </accountable>
+        <interval>daily</interval>
+      </goal>
+    </goals>
     <password>encrypted_password1</password>
     <gender>male</gender>
     <phone>4805551111</phone>
