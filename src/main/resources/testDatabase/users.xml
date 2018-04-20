@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<UserContainer>
+  <user>
+    <username>user_1</username>
+    <password>encrypted_password1</password>
+    <gender>male</gender>
+    <phone>4805551111</phone>
+    <email>user1@gmail.com</email>
+  </user>
+  <user>
+    <username>user_2</username>
+    <password>encrypted_password2</password>
+    <gender>female</gender>
+    <phone>4805551111</phone>
+    <email>user2@gmail.com</email>
+  </user>
+  <user>
+    <username>user_3</username>
+    <password>encrypted_password3</password>
+    <gender>trans</gender>
+    <phone>1113334454</phone>
+    <email>user3@gmail.com</email>
+  </user>
+</UserContainer>
+
