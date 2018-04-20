@@ -10,9 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class CoreApplicationTests {
 
-	@Test
-	@Ignore
-	public void contextLoads() {
-	}
-
+  @Test
+  @Ignore
+  public void contextLoads() {}
 }

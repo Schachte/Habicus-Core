@@ -7,16 +7,14 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * Allows a container to hold a list of users and map to standard POJO
- */
-@XmlRootElement(name="UserContainer")
+/** Allows a container to hold a list of users and map to standard POJO */
+@XmlRootElement(name = "UserContainer")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class UserContainer {
+public class UserContainer implements Container {
 
   public UserContainer() {}
 
-  @XmlElement(name="user")
+  @XmlElement(name = "user")
   private List<User> users;
 
   public List<User> getUsers() {
@@ -26,5 +24,9 @@ public class UserContainer {
   public void setUsers(List<User> users) {
     this.users = users;
   }
-}
 
+  @Override
+  public List<User> getAll() {
+    return users;
+  }
+}

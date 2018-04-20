@@ -7,17 +7,13 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * User entity that will reference
- */
+/** User entity that will reference */
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="user")
+@XmlRootElement(name = "user")
 public class User {
 
-  @Id
-  @GeneratedValue
-  private Long id;
+  @Id @GeneratedValue private Long id;
 
   private String username;
 
@@ -67,5 +63,10 @@ public class User {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  @Override
+  public String toString() {
+    return this.getClass().getSimpleName();
   }
 }
