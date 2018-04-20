@@ -1,6 +1,8 @@
 package com.habicus.repository;
 
 import static java.lang.Class.*;
+
+import com.habicus.core.data.GoalRepository;
 import com.habicus.core.data.UserRepository;
 import com.habicus.repository.DataContainers.Container;
 import java.io.IOException;
@@ -31,8 +33,12 @@ import org.springframework.stereotype.Component;
 public class Loader implements ApplicationListener<ApplicationReadyEvent> {
 
   private static final Logger LOGGER = Logger.getLogger(Loader.class.getName());
+
   Map<String, JpaRepository> reposByName = new HashMap<>();
+
   @Autowired private UserRepository userRepo;
+
+  @Autowired private GoalRepository goalRepo;
 
   /**
    * Strips off any dangling file extensions to enable class cast into file ingestor
@@ -97,6 +103,7 @@ public class Loader implements ApplicationListener<ApplicationReadyEvent> {
 
     /** BEGIN REPOSITORY MAP HERE */
     reposByName.put("User", userRepo);
+    reposByName.put("Goal", goalRepo);
 
     try {
       loadTestContainers();

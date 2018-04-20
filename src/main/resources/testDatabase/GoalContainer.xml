@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<GoalContainer>
+  <goal>
+    <title>goal title 1</title>
+    <description>
+      Hi, this is my goal description.
+    </description>
+    <accountable>
+      testeruser@gmail.com
+    </accountable>
+    <interval>daily</interval>
+  </goal>
+</GoalContainer>
+
