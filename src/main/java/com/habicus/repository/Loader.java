@@ -19,6 +19,7 @@ package com.habicus.repository;
 
 import static java.lang.Class.*;
 
+import com.habicus.core.configuration.CoreConstants;
 import com.habicus.repository.DataContainers.Container;
 import java.io.IOException;
 import java.util.Arrays;
@@ -38,7 +39,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Launches at application boot-time to inject any user-defined test data and stores into test
- * database automatically
+ * database automatically.
  */
 @Component
 public class Loader implements ApplicationListener<ApplicationReadyEvent> {
@@ -75,13 +76,13 @@ public class Loader implements ApplicationListener<ApplicationReadyEvent> {
 
     } catch (IOException | JAXBException exception) {
       LOGGER.log(Level.SEVERE, "Unable to unmarshal data!");
-      exception.printStackTrace();
+      System.exit(CoreConstants.SYSTEM_EXIT_ERROR);
+      return null;
     }
-    return null;
   }
 
   /**
-   * Read in file from static resources directory
+   * Read in file from static {@link resources} directory
    *
    * @param fileResource
    * @return
@@ -91,16 +92,18 @@ public class Loader implements ApplicationListener<ApplicationReadyEvent> {
    */
   private Container ingestFromFile(Resource fileResource) {
     if (fileResource == null) {
-      throw new NullPointerException("File Resource Is Invalid");
+      LOGGER.log(Level.SEVERE, "File resource is invalid! Process cannot continue.");
+      System.exit(1);
     }
 
     try {
       return parseFile(
           fileResource, forName(CONTAINER_PATH + normalizeFileName(fileResource.getFilename())));
     } catch (ClassNotFoundException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, "Unable to find the specified data container class");
+      System.exit(CoreConstants.SYSTEM_EXIT_ERROR);
+      return null;
     }
-    return null;
   }
 
   @Override
@@ -109,7 +112,7 @@ public class Loader implements ApplicationListener<ApplicationReadyEvent> {
 
     try {
       loadTestContainers();
-    } catch (IOException | JAXBException e) {
+    } catch (IOException e) {
       LOGGER.log(Level.INFO, "Unable to store user data");
       e.printStackTrace();
     }
@@ -117,11 +120,12 @@ public class Loader implements ApplicationListener<ApplicationReadyEvent> {
 
   /**
    * Loads up any test data from resources and stores into embedded DB for test env
+   * Containers referring to the test environment data structure, which can be understood more here
+   * {@link Container}
    *
    * @throws IOException
-   * @throws JAXBException
    */
-  private void loadTestContainers() throws IOException, JAXBException {
+  private void loadTestContainers() throws IOException {
     LOGGER.log(Level.INFO, "User data table being added to database");
     Resource[] resources = retrieveTestDataFiles();
 
@@ -134,7 +138,7 @@ public class Loader implements ApplicationListener<ApplicationReadyEvent> {
      * save each individual element into the database
      */
     Arrays.stream(resources)
-        .flatMap(r -> ((Container) ingestFromFile(r)).getAll().stream())
+        .flatMap(r -> (ingestFromFile(r)).getAll().stream())
         .forEach(
             dataType -> {
               loaderConstants.getRepo(dataType.toString()).save(dataType);
@@ -143,7 +147,7 @@ public class Loader implements ApplicationListener<ApplicationReadyEvent> {
   }
 
   /**
-   * Pulls out all test container files from static resources dir
+   * Pulls out all test {@link resources} files from resources dir
    *
    * @return
    * @throws IOException

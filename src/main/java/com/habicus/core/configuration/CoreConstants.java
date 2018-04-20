@@ -15,16 +15,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.habicus.repository.DataContainers;
-
-import java.util.List;
+package com.habicus.core.configuration;
 
 /**
- * Every test data table will inherit Container in an effort to genericize the calls to grab
- * all data in the {@link com.habicus.repository.Loader}. This greatly increases the amount
- * of code reuse we can enable when iterating through and loading all the test data into the database.
- * @param <T>
+ * Core constants that are reused through the core of the application
+ * Guidelines: Anything that is continuously retyped in subclasses, components, configuration files
+ * should be placed in this file.
  */
-public interface Container<T> {
-  public List<T> getAll();
+public class CoreConstants {
+
+    public final static Integer SYSTEM_EXIT_ERROR = 1;
+
+    public final static Integer SYSTEM_EXIT_OK = 0;
 }
