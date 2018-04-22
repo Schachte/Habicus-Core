@@ -25,6 +25,7 @@ package com.habicus.core.service.Goal;
 import com.habicus.core.dao.repository.GoalRepository;
 import com.habicus.core.model.Goal;
 import java.util.List;
+import javax.ws.rs.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +37,16 @@ public class GoalService {
   public List<Goal> retrieveGoalsByUserId(Long id) {
     List<Goal> goals = goalRepository.findGoalsByUserId(id);
     return goals;
+  }
+
+  /**
+   * Allows a {@link com.habicus.core.model.User} to persist a {@link Goal} object into the DB
+   *
+   * @param goal
+   * @return
+   */
+  public Goal saveUserGoal(Goal goal) {
+    if (goal != null) return goalRepository.save(goal);
+    else throw new NotFoundException("Unable to save an empty goal");
   }
 }

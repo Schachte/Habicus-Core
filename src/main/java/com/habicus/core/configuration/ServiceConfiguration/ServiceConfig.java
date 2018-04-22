@@ -23,6 +23,7 @@
 package com.habicus.core.configuration.ServiceConfiguration;
 
 import com.habicus.core.service.Goal.GoalService;
+import com.habicus.core.service.User.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -32,5 +33,10 @@ public class ServiceConfig {
   @Bean
   public GoalService goalService() {
     return new GoalService();
+  }
+
+  @Bean
+  public UserService userService() {
+    return new UserService();
   }
 }
