@@ -24,24 +24,23 @@ package com.habicus.core.model;
 
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /** User entity that will reference */
 @Entity
-@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "user")
+
 public class User {
 
-  @Id @GeneratedValue private Long id;
+  private Long id;
 
   private String username;
 
@@ -53,12 +52,20 @@ public class User {
 
   private String email;
 
-  @ElementCollection
-  @OneToMany(cascade = {CascadeType.ALL})
-  @XmlElementWrapper(name = "goals")
-  @XmlElement(name = "goal")
   private List<Goal> assignedUserGoals;
 
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  @Id
+  @GeneratedValue
+  @Column(name="user_id")
+  public Long getId() {
+    return this.id;
+  }
+
+  @XmlElement(name="username")
   public String getUserName() {
     return username;
   }
@@ -67,14 +74,22 @@ public class User {
     this.username = username;
   }
 
+  @ElementCollection(targetClass = Goal.class)
+  @XmlElementWrapper(name="goals")
+  @XmlElement(name="goal")
+  @OneToMany(cascade = CascadeType.ALL)
   public List<Goal> getAssignedUserGoals() {
     return assignedUserGoals;
   }
 
   public void setAssignedUserGoals(List<Goal> assignedUserGoals) {
     this.assignedUserGoals = assignedUserGoals;
+    for (Goal g : this.assignedUserGoals) {
+      g.setUser(this);
+    }
   }
 
+  @XmlElement(name="password")
   public String getEncryptedPassword() {
     return password;
   }
@@ -83,6 +98,7 @@ public class User {
     this.password = encryptedPassword;
   }
 
+  @XmlElement(name="gender")
   public String getGender() {
     return gender;
   }
@@ -91,6 +107,7 @@ public class User {
     this.gender = gender;
   }
 
+  @XmlElement(name="phone")
   public String getPhone() {
     return phone;
   }
@@ -99,6 +116,7 @@ public class User {
     this.phone = phone;
   }
 
+  @XmlElement(name="email")
   public String getEmail() {
     return email;
   }

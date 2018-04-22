@@ -4,6 +4,16 @@
     <username>user_1</username>
     <goals>
       <goal>
+        <title>goal title 1</title>
+        <description>
+          Hi, this is my goal description.
+        </description>
+        <accountable>
+          testeruser@gmail.com
+        </accountable>
+        <interval>daily</interval>
+      </goal>
+      <goal>
         <title>goal title 2</title>
         <description>
           Hi, this is my goal description.
@@ -27,6 +37,18 @@
     <email>user2@gmail.com</email>
   </user>
   <user>
+    <goals>
+      <goal>
+        <title>goal title 1</title>
+        <description>
+          Hi, this is my goal description.
+        </description>
+        <accountable>
+          testeruser@gmail.com
+        </accountable>
+        <interval>daily</interval>
+      </goal>
+    </goals>
     <username>user_3</username>
     <password>encrypted_password3</password>
     <gender>trans</gender>

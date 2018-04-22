@@ -25,6 +25,8 @@ package com.habicus.core.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -40,6 +42,10 @@ public class Goal {
 
   private String title;
 
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
+
   private String description;
 
   @XmlElement(name = "accountable")
@@ -49,6 +55,14 @@ public class Goal {
 
   public String getTitle() {
     return title;
+  }
+
+  public User getUser() {
+    return this.user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 
   public void setTitle(String title) {
