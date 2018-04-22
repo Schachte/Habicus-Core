@@ -34,7 +34,7 @@ public class GoalService {
   @Autowired private GoalRepository goalRepository;
 
   public List<Goal> retrieveGoalsByUserId(Long id) {
-    List<Goal> goals = goalRepository.findGoalByUserId(id);
+    List<Goal> goals = goalRepository.findGoalsByUserId(id);
     return goals;
   }
 }

@@ -29,5 +29,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GoalRepository extends JpaRepository<Goal, Long> {
-  List<Goal> findGoalByUserId(Long id);
+  List<Goal> findGoalsByUserId(Long id);
 }
