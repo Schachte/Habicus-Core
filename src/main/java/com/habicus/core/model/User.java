@@ -38,7 +38,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 /** User entity that will reference */
 @Entity
 @XmlRootElement(name = "user")
-
 public class User {
 
   private Long id;
@@ -61,12 +60,12 @@ public class User {
 
   @Id
   @GeneratedValue
-  @Column(name="user_id")
+  @Column(name = "user_id")
   public Long getId() {
     return this.id;
   }
 
-  @XmlElement(name="username")
+  @XmlElement(name = "username")
   public String getUserName() {
     return username;
   }
@@ -76,8 +75,8 @@ public class User {
   }
 
   @ElementCollection(targetClass = Goal.class)
-  @XmlElementWrapper(name="goals")
-  @XmlElement(name="goal")
+  @XmlElementWrapper(name = "goals")
+  @XmlElement(name = "goal")
   @OneToMany(cascade = CascadeType.ALL)
   @JsonIgnore
   public List<Goal> getAssignedUserGoals() {
@@ -91,7 +90,7 @@ public class User {
     }
   }
 
-  @XmlElement(name="password")
+  @XmlElement(name = "password")
   public String getEncryptedPassword() {
     return password;
   }
@@ -100,7 +99,7 @@ public class User {
     this.password = encryptedPassword;
   }
 
-  @XmlElement(name="gender")
+  @XmlElement(name = "gender")
   public String getGender() {
     return gender;
   }
@@ -109,7 +108,7 @@ public class User {
     this.gender = gender;
   }
 
-  @XmlElement(name="phone")
+  @XmlElement(name = "phone")
   public String getPhone() {
     return phone;
   }
@@ -118,7 +117,7 @@ public class User {
     this.phone = phone;
   }
 
-  @XmlElement(name="email")
+  @XmlElement(name = "email")
   public String getEmail() {
     return email;
   }
