@@ -22,6 +22,7 @@
  */
 package com.habicus.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -78,6 +79,7 @@ public class User {
   @XmlElementWrapper(name="goals")
   @XmlElement(name="goal")
   @OneToMany(cascade = CascadeType.ALL)
+  @JsonIgnore
   public List<Goal> getAssignedUserGoals() {
     return assignedUserGoals;
   }

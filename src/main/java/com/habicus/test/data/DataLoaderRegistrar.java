@@ -29,6 +29,7 @@ import com.habicus.core.model.User;
 import com.habicus.test.data.DataContainers.Container;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -51,6 +52,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataLoaderRegistrar {
 
+  private static final Logger LOGGER = Logger.getLogger(DataLoaderRegistrar.class.getName());
+
   /** Auto wired all {@link JpaRepository} references here to support storing test dao in DB */
   @Autowired public UserRepository userRepo;
 
@@ -72,6 +75,8 @@ public class DataLoaderRegistrar {
     // Register all repositories here
     reposByName.put(User.class.getSimpleName(), userRepo);
     reposByName.put(Goal.class.getSimpleName(), goalRepo);
+
+    LOGGER.info("Finished loading data repositories for dev environment");
   }
 
   /**
