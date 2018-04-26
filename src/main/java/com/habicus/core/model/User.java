@@ -113,7 +113,8 @@ public class User {
     this.email = email;
   }
 
-  public User(Long id, String username, String password, String gender, String phone, String email) {
+  public User(
+      Long id, String username, String password, String gender, String phone, String email) {
     this.username = username;
     this.password = password;
     this.gender = gender;

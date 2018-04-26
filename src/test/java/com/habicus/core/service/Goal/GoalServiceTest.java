@@ -47,7 +47,9 @@ public class GoalServiceTest {
     goalRepo = mock(GoalRepository.class);
     userRepo = mock(UserRepository.class);
     goalService = new GoalService(goalRepo);
-    user = new User(new Long(1), "testerUser", "testerPass", "male", "4804518823", "testeremail@gmail.com");
+    user =
+        new User(
+            new Long(1), "testerUser", "testerPass", "male", "4804518823", "testeremail@gmail.com");
     userRepo.save(user);
   }
 
@@ -58,7 +60,7 @@ public class GoalServiceTest {
     Goal goal1 = new Goal(this.user, "testerDescription", "accountability", "interval");
     Goal goal2 = new Goal(this.user, "testerDescription2", "accountability2", "interval");
     Goal goal3 = new Goal(this.user, "testerDescription3", "accountability3", "interval");
-    Goal goal4= new Goal(this.user, "testerDescription4", "accountability4", "interval");
+    Goal goal4 = new Goal(this.user, "testerDescription4", "accountability4", "interval");
 
     goalList.add(goal1);
     goalList.add(goal2);
