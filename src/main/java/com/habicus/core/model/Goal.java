@@ -51,7 +51,17 @@ public class Goal {
   @XmlElement(name = "accountable")
   private String accountability;
 
+  // TODO: Change to enum and allow custom intervals
   private String interval;
+
+  public Goal(User user, String description, String accountability, String interval) {
+    this.user = user;
+    this.description = description;
+    this.accountability = accountability;
+    this.interval = interval;
+  }
+
+  public Goal() {}
 
   public String getTitle() {
     return title;

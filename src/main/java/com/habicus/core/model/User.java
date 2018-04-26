@@ -90,6 +90,40 @@ public class User {
     }
   }
 
+  public User(
+      String username,
+      String password,
+      String gender,
+      String phone,
+      String email,
+      List<Goal> goals) {
+    this.username = username;
+    this.password = password;
+    this.gender = gender;
+    this.phone = phone;
+    this.email = email;
+    this.assignedUserGoals = goals;
+  }
+
+  public User(String username, String password, String gender, String phone, String email) {
+    this.username = username;
+    this.password = password;
+    this.gender = gender;
+    this.phone = phone;
+    this.email = email;
+  }
+
+  public User(Long id, String username, String password, String gender, String phone, String email) {
+    this.username = username;
+    this.password = password;
+    this.gender = gender;
+    this.phone = phone;
+    this.email = email;
+    this.id = id;
+  }
+
+  public User() {}
+
   @XmlElement(name = "password")
   public String getEncryptedPassword() {
     return password;

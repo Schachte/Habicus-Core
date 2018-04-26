@@ -29,8 +29,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ServiceConfig {
 
-  @Bean
-  public GoalService goalService() {
-    return new GoalService();
-  }
+//  @Bean
+//  public GoalService goalService() {
+//    return new GoalService();
+//  }
 }

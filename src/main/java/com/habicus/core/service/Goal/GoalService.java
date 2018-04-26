@@ -31,10 +31,30 @@ import org.springframework.stereotype.Service;
 @Service
 public class GoalService {
 
-  @Autowired private GoalRepository goalRepository;
+  private GoalRepository goalRepository;
 
+  @Autowired
+  public GoalService(GoalRepository goalRepository) {
+    this.goalRepository = goalRepository;
+  }
+  /**
+   * Retrieve all user {@link Goal} objects from the database
+   *
+   * @param id
+   * @return
+   */
   public List<Goal> retrieveGoalsByUserId(Long id) {
     List<Goal> goals = goalRepository.findGoalsByUserId(id);
     return goals;
+  }
+
+  /**
+   * Retrieve all active user {@link Goal} objects from the database
+   *
+   * @param id
+   * @return
+   */
+  public List<Goal> retrieveActiveGoalsByUserId(Long id) {
+    throw new UnsupportedOperationException();
   }
 }
