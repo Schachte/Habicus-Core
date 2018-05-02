@@ -49,6 +49,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('io.jsonwebtoken:jjwt:0.7.0')
     compile('mysql:mysql-connector-java:5.1.6')
+    compile group: 'com.google.guava', name: 'guava', version: '11.0.2'
     compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.3.0-rc1')
 
     testCompile 'junit:junit:4.12'

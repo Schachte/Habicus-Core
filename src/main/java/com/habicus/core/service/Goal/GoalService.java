@@ -29,11 +29,15 @@ import com.habicus.core.model.Goal;
 import com.habicus.core.service.User.UserService;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GoalService {
+
+  private static final Logger LOGGER = Logger.getLogger(GoalService.class.getName());
 
   // Repository definitions
   @Autowired private GoalRepository goalRepository;
@@ -52,5 +56,36 @@ public class GoalService {
     // TODO: Need to actually do validation on this input userId with the req. token
     Optional<List<Goal>> userGoals = goalRepository.getGoalsByUsersUserId(userId);
     return userGoals;
+  }
+
+  /**
+   * Allows the creation of a new {@link Goal} user the requesting user token
+   *
+   * @param goal
+   * @return
+   * @throws NotFoundException
+   */
+  public Optional<Goal> addNewGoal(Goal goal) {
+    // TODO: Need to actually do validation on this input userId with the req. token
+
+    goal =
+        Optional.of(goal)
+            .map(Goal::retrieveInstance)
+            .orElseThrow(() -> new NoGoalsFoundException("Invalid Goal Object"));
+
+    goal = assignUserToGoal(goal);
+    goalRepository.save(goal);
+    LOGGER.info(String.format("Goal object saved: ", goal.toString()));
+    return Optional.of(goal);
+  }
+
+  /** Assigns a particular requesting {@link com.habicus.core.model.User} to the new goal object */
+  private Goal assignUserToGoal(Goal goal) {
+    // TODO: Need to actually do validation on this input userId with the req. token
+    // TODO: This is where we need to get the user object from the user-repository and attach
+
+    int dummyUserId = 1;
+    goal.setUsersUserId(dummyUserId);
+    return goal;
   }
 }
