@@ -23,7 +23,6 @@
 package com.habicus.core.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -32,7 +31,7 @@ public class GoalsPK implements Serializable {
 
   private int goalId;
   private int usersUserId;
-  private Timestamp dueDate;
+  private long dueDate;
 
   @Column(name = "goal_id")
   @Id
@@ -56,11 +55,11 @@ public class GoalsPK implements Serializable {
 
   @Column(name = "due_date")
   @Id
-  public Timestamp getDueDate() {
+  public long getDueDate() {
     return dueDate;
   }
 
-  public void setDueDate(Timestamp dueDate) {
+  public void setDueDate(long dueDate) {
     this.dueDate = dueDate;
   }
 

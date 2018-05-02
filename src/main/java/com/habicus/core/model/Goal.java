@@ -149,6 +149,41 @@ public class Goal {
     this.goalComplete = goalComplete;
   }
 
+  public Goal retrieveInstance() {
+    return this;
+  }
+
+  @Override
+  public String toString() {
+    return "Goal{"
+        + "usersUserId="
+        + usersUserId
+        + ", taskUnitCount="
+        + taskUnitCount
+        + ", goalId="
+        + goalId
+        + ", title='"
+        + title
+        + '\''
+        + ", description='"
+        + description
+        + '\''
+        + ", goalInterval='"
+        + goalInterval
+        + '\''
+        + ", pledgeAmount="
+        + pledgeAmount
+        + ", dueDate="
+        + dueDate
+        + ", labelColor='"
+        + labelColor
+        + '\''
+        + ", goalComplete='"
+        + goalComplete
+        + '\''
+        + '}';
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
