@@ -7,10 +7,12 @@
 
 -------
 <center>
+	
 [![License](https://img.shields.io/badge/Habicus-Core-ff69b4.svg)]()
 [![License](https://img.shields.io/badge/License-GPL-orange.svg)]()
 [![Build Status](https://travis-ci.org/Habicus/Habicus-Core-Web.svg?branch=master)](https://travis-ci.org/Habicus/Habicus-Core-Web)
 [![Waffle.io - Columns and their card count](https://badge.waffle.io/Habicus/Habicus-Core-Web.png?columns=all)](https://waffle.io/Habicus/Habicus-Core-Web?utm_source=badge)
+
 </center>
 
 
