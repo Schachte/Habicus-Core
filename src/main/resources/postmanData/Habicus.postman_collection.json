@@ -1,0 +1,224 @@
+{
+	"info": {
+		"_postman_id": "5707655f-c1f6-4cef-87d0-ebc2c81d06ae",
+		"name": "Habicus",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Goals",
+			"description": "",
+			"item": [
+				{
+					"name": "Create New Goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dueDate\": 1525227045,\n  \"description\": \"This is my test goal description\",\n  \"goalComplete\": 0,\n  \"goalInterval\": \"daily\",\n  \"labelColor\": \"green\",\n  \"pledgeAmount\": 5.45,\n  \"taskUnitCount\": 4,\n  \"title\": \"Running\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/v1/goal/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"v1",
+								"goal",
+								""
+							]
+						},
+						"description": "Simple goal creation"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Existing Goal",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXJVc2VyMiIsImV4cCI6MTUyNjQyNjE2M30._MwF01KeLxvUeyEGfjc-Axcu-pnuAvTAnfqgmpetwdtIRTMa1EoGx_HrCjzx6dI5wCagN0NOLEBzsyrM3syvIA"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dueDate\": 1525227045,\n  \"description\": \"This is my test goal description\",\n  \"goalComplete\": 0,\n  \"goalInterval\": \"daily\",\n  \"pledgeAmount\": 1.5,\n  \"taskUnitCount\": 4,\n  \"title\": \"Running Fast\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/v1/goal/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"v1",
+								"goal",
+								"2"
+							]
+						},
+						"description": "Simple goal deltion"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Existing Goal",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXJVc2VyMiIsImV4cCI6MTUyNjQyNzMwMH0.YdpNlMJlWuvuc0vBDqQ7v1B6tywnh8MZO8u-pQjYYdZpo0Dn2ac_XUIyB_D2iGpxBoNgN4_XbJxGZMwcXLi6LQ"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"goalId\": 2,\n  \"dueDate\": 1525227045,\n  \"description\": \"This is my test goal description\",\n  \"goalComplete\": 0,\n  \"goalInterval\": \"monthly\",\n  \"labelColor\": \"pink\",\n  \"pledgeAmount\": 1.5,\n  \"taskUnitCount\": 4,\n  \"title\": \"Running Fast\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/v1/goal/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"v1",
+								"goal",
+								"2"
+							]
+						},
+						"description": "Simple goal update"
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve All Goals (For a user)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXJVc2VyMyIsImV4cCI6MTUyNjQyOTA1NX0.MdqkC3zo2D_QSen8excFDVkz_tz4MffJKLcLDk9omBOnSCTq6t3CyTm1btaQSjPwO18cbwgGSlYddxEe_vl-Qw"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"goalId\": 2,\n  \"dueDate\": 1525227045,\n  \"description\": \"This is my test goal description\",\n  \"goalComplete\": 0,\n  \"goalInterval\": \"annually\",\n  \"labelColor\": \"yellow\",\n  \"pledgeAmount\": 1.5,\n  \"taskUnitCount\": 4,\n  \"title\": \"Running Fast\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/v1/goals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"v1",
+								"goals"
+							]
+						},
+						"description": "Retrieve all user goals"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Security",
+			"description": "",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"testerUser3\",\n\t\"password\": \"pass\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:7777/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"user\",\n\t\"password\": \"pass\",\n\t\"email\": \"email2@gmail.com\",\n\t\"gender\": \"male\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/v1/user/registration",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"registration"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"description": "",
+			"item": []
+		}
+	]
+}
