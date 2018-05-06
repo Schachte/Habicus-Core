@@ -23,13 +23,14 @@
 package com.habicus.core.dao.repository;
 
 import com.habicus.core.model.Goal;
+import com.habicus.core.model.GoalsPK;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GoalRepository extends JpaRepository<Goal, Long> {
+public interface GoalRepository extends JpaRepository<Goal, GoalsPK> {
 
   /**
    * Allows retrieval of all {@link Goal} that are associated with a particular {@link
@@ -44,7 +45,15 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
    * Get a singular {@link Goal} that is associated with a goal id that is stored as metadata
    *
    * @param goalId
-   * @return
+   * @return {@link Optional<Goal>} user goal list
    */
   Optional<Goal> getGoalsByGoalId(int goalId);
+
+  /**
+   * Retrieves a SINGLE goal by the associated {@link Goal#goalId}
+   *
+   * @param goalId
+   * @return {@link Goal}
+   */
+  Optional<Goal> getGoalByGoalId(int goalId);
 }

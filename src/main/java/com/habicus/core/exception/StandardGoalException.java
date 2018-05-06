@@ -22,4 +22,8 @@
  */
 package com.habicus.core.exception;
 
-public class StandardGoalException {}
+public class StandardGoalException extends RuntimeException {
+  public StandardGoalException(String message) {
+    super(message);
+  }
+}

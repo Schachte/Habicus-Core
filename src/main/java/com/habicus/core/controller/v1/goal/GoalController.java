@@ -23,12 +23,14 @@
 package com.habicus.core.controller.v1.goal;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMap.Builder;
 import com.habicus.core.exception.API.InvalidRequestException;
 import com.habicus.core.exception.NoGoalsFoundException;
+import com.habicus.core.exception.StandardGoalException;
+import com.habicus.core.exception.StandardUserException;
 import com.habicus.core.model.Goal;
 import com.habicus.core.service.Goal.GoalService;
 import com.habicus.core.service.User.UserService;
+import com.habicus.core.util.ControllerUtil;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -37,11 +39,14 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,39 +72,101 @@ public class GoalController {
   }
 
   /**
-   * Creates a user goal and then persists it for that specific user Grabs the current security
-   * subject to derive the proper user
+   * Enable deletion of a particular {@link Goal} record by a requesting user
    *
-   * @return {@link ResponseEntity} of the {@link com.habicus.core.model.User} {@link Goal}
+   * @param goalId
+   * @param principal
+   * @return
    */
-  @PostMapping("/goal/")
+  @DeleteMapping("/goal/{goalId}")
   public ResponseEntity<ImmutableMap<String, String>> createUserGoal(
-      @RequestBody @Valid Goal goal, Errors errors) {
-
-    Optional<Goal> createdGoal = goalService.addNewGoal(goal);
-
-    if (errors.hasErrors() || !createdGoal.isPresent()) {
-      LOGGER.info("Goal was null, unable to be created and saved successfully");
-      throw new InvalidRequestException(
-          String.format("Error creating goal: " + goal.toString()),
-          HttpStatus.INTERNAL_SERVER_ERROR);
+      @PathVariable("goalId") int goalId, Principal principal) {
+    Goal deletedGoal;
+    ImmutableMap<String, String> responseData;
+    try {
+      deletedGoal = goalService.removeGoal(principal, goalId);
+      responseData =
+          ControllerUtil.createResponse(
+              "Deleted Goal Successfully!", deletedGoal.toString(), HttpStatus.OK);
+    } catch (Exception e) {
+      responseData =
+          ControllerUtil.createResponse(
+              "Failure to remove specified goal.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    LOGGER.info("Goal created and saved successfully");
-
-    ImmutableMap<String, String> responseData =
-        new Builder<String, String>()
-            .put("message", "Goal saved and created successfully!")
-            .put("object", createdGoal.get().toString())
-            .put("status", String.valueOf(HttpStatus.CREATED))
-            .build();
 
     return new ResponseEntity<>(responseData, HttpStatus.CREATED);
   }
 
   /**
-   * Allows retrieval by a single userId for getting goals
-   * Allows retrieval of user goals based on sec. token
+   * Creates a user goal and then persists it for that specific user Grabs the current security
+   * subject to derive the proper user
+   *
+   * @return {@link ResponseEntity} of the {@link com.habicus.core.model.User} {@link Goal}
+   */
+  @PostMapping("/goal")
+  public ResponseEntity<ImmutableMap> createUserGoal(
+      @RequestBody @Valid Goal goal, BindingResult bindResult, Principal principal) {
+    ImmutableMap<String, String> responseData;
+
+    if (bindResult.hasErrors()) {
+      // TODO: Create error response class to log the bindResult errors
+      LOGGER.info("Creation failure during object binding: " + goal.toString());
+
+      responseData =
+          ControllerUtil.createResponse(
+              "Failure to create new Goal", goal.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(responseData, HttpStatus.CREATED);
+    }
+
+    Optional<Goal> createdGoal = goalService.addNewGoal(principal, goal);
+    LOGGER.info("Goal created and saved successfully");
+
+    responseData =
+        ControllerUtil.createResponse(
+            "Goal saved and created successfully!",
+            createdGoal.get().toString(),
+            HttpStatus.CREATED);
+    return new ResponseEntity<>(responseData, HttpStatus.CREATED);
+  }
+
+  @PutMapping("/goal/{goalId}")
+  public ResponseEntity<ImmutableMap<String, String>> updateUserGoal(
+      @PathVariable("goalId") int goalId,
+      @Valid @RequestBody Goal goal,
+      BindingResult bindResult,
+      Principal principal)
+      throws NoGoalsFoundException {
+
+    ImmutableMap<String, String> responseData;
+    if (bindResult.hasErrors()) {
+      // TODO: Create error response class to log the bindResult errors
+      LOGGER.info("Error binding input goal object: " + goal.toString());
+
+      responseData =
+          ControllerUtil.createResponse(
+              "Failure to update goal", goal.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(responseData, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    Optional<Goal> updatedGoal = goalService.updateExistingGoal(principal, goal);
+    LOGGER.info("Goal updated successfully");
+
+    try {
+      responseData =
+          ControllerUtil.createResponse(
+              "Goal updated successfully", updatedGoal.get().toString(), HttpStatus.OK);
+      return new ResponseEntity<>(responseData, HttpStatus.OK);
+    } catch (StandardUserException | StandardGoalException e) {
+      responseData =
+          ControllerUtil.createResponse(
+              "Permissions Exception Updating Goal", e.toString(), HttpStatus.OK);
+      return new ResponseEntity<>(responseData, HttpStatus.OK);
+    }
+  }
+
+  /**
+   * Allows retrieval by a single userId for getting goals Allows retrieval of user goals based on
+   * sec. token
    *
    * @return
    * @throws NoGoalsFoundException
@@ -108,15 +175,13 @@ public class GoalController {
   @GetMapping("/goals")
   public ResponseEntity<List<Goal>> retrieveUserGoals(Principal principal)
       throws NoGoalsFoundException {
-    LOGGER.info("Current querying for all goals on user: " + principal.getName());
 
-    int userId = userService.verifyAndRetrieveUser(principal);
-    Optional<List<Goal>> goalList = goalService.retrieveGoalsByUserId(userId);
+    LOGGER.info("Current querying for all goals on user: " + principal.getName());
+    Optional<List<Goal>> goalList = goalService.retrieveGoalsByUserId(principal);
+
     if (!goalList.isPresent()) {
       throw new InvalidRequestException(
-          String.format(
-              "No goals found for requesting user: " + principal.getName() + ":" + userId),
-          HttpStatus.NOT_FOUND);
+          "No goals found for requesting user: " + principal.getName(), HttpStatus.NOT_FOUND);
     }
     return new ResponseEntity<>(goalList.get(), HttpStatus.OK);
   }

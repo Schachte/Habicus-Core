@@ -28,6 +28,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @IdClass(GoalsPK.class)
@@ -60,6 +61,7 @@ public class Goal {
   }
 
   @Basic
+  @NotNull
   @Column(name = "title")
   public String getTitle() {
     return title;
@@ -80,6 +82,7 @@ public class Goal {
   }
 
   @Basic
+  @NotNull
   @Column(name = "goal_interval")
   public String getGoalInterval() {
     return goalInterval;
@@ -100,6 +103,7 @@ public class Goal {
   }
 
   @Basic
+  @NotNull
   @Column(name = "task_unit_count")
   public int getTaskUnitCount() {
     return taskUnitCount;
@@ -110,6 +114,7 @@ public class Goal {
   }
 
   @Id
+  @NotNull
   @Column(name = "due_date")
   public long getDueDate() {
     return dueDate;
@@ -120,6 +125,7 @@ public class Goal {
   }
 
   @Basic
+  @NotNull
   @Column(name = "label_color")
   public String getLabelColor() {
     return labelColor;
@@ -130,6 +136,7 @@ public class Goal {
   }
 
   @Basic
+  @NotNull
   @Column(name = "pledge_amount")
   public Double getPledgeAmount() {
     return pledgeAmount;
@@ -149,6 +156,11 @@ public class Goal {
     this.goalComplete = goalComplete;
   }
 
+  /**
+   * TODO: Revisit if this is a good way to validate a current instance. Used in: {@link
+   * com.habicus.core.service.Goal.GoalService#addNewGoal(java.security.Principal,
+   * com.habicus.core.model.Goal)}
+   */
   public Goal retrieveInstance() {
     return this;
   }

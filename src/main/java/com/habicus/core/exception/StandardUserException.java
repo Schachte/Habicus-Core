@@ -22,4 +22,12 @@
  */
 package com.habicus.core.exception;
 
-public class StandardUserException {}
+public class StandardUserException extends RuntimeException {
+  public StandardUserException() {
+    super();
+  }
+
+  public StandardUserException(String err) {
+    super(err);
+  }
+}

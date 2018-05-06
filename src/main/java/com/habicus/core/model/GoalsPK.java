@@ -31,7 +31,6 @@ public class GoalsPK implements Serializable {
 
   private int goalId;
   private int usersUserId;
-  private long dueDate;
 
   @Column(name = "goal_id")
   @Id
@@ -53,16 +52,6 @@ public class GoalsPK implements Serializable {
     this.usersUserId = usersUserId;
   }
 
-  @Column(name = "due_date")
-  @Id
-  public long getDueDate() {
-    return dueDate;
-  }
-
-  public void setDueDate(long dueDate) {
-    this.dueDate = dueDate;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -72,14 +61,12 @@ public class GoalsPK implements Serializable {
       return false;
     }
     GoalsPK goalPK = (GoalsPK) o;
-    return goalId == goalPK.goalId
-        && usersUserId == goalPK.usersUserId
-        && Objects.equals(dueDate, goalPK.dueDate);
+    return goalId == goalPK.goalId && usersUserId == goalPK.usersUserId;
   }
 
   @Override
   public int hashCode() {
 
-    return Objects.hash(goalId, usersUserId, dueDate);
+    return Objects.hash(goalId, usersUserId);
   }
 }
