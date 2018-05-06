@@ -1,0 +1,6 @@
+mergeable:
+  # Minimum of 1 approvals is needed.
+  approvals: 1
+
+  # Regular expression to be tested on the title. Not mergeable when true.  
+  title: 'HABI-'
