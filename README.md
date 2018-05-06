@@ -6,15 +6,9 @@
 </p>
 
 -------
-<div>
-	<div style="display: inline-block">
-		<img src="https://img.shields.io/badge/Habicus-Core-ff69b4.svg" />
-	</div>
-	<div style="display: inline-block">
-		<img src="https://img.shields.io/badge/License-GPL-orange.svg" />
-	</div>
-</div>
 
+<img src="https://img.shields.io/badge/Habicus-Core-ff69b4.svg" />
+<img src="https://img.shields.io/badge/License-GPL-orange.svg" />
 [![Waffle.io - Columns and their card count](https://badge.waffle.io/Habicus/Habicus-Core-Web.png?columns=all)](https://waffle.io/Habicus/Habicus-Core-Web?utm_source=badge)
 [![Build Status](https://travis-ci.org/Habicus/Habicus-Core-Web.svg?branch=master)](https://travis-ci.org/Habicus/Habicus-Core-Web)
 
