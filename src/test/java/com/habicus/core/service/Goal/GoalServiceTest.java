@@ -258,7 +258,7 @@ public class GoalServiceTest {
     doReturn(DUMMY_USER_ID).when(securityService).getUserIdByPrincipal(any(Principal.class));
     when(goal.getUsersUserId()).thenReturn(DUMMY_USER_ID);
     boolean userOwnsGoal = goalService.requesterOwnsGoal(principal, goal);
-    assertEquals(false, userOwnsGoal);
+    assertEquals(true, userOwnsGoal);
   }
 
   @Test(expected = StandardUserException.class)
