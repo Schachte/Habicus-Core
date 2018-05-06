@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Logger;
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -68,8 +67,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
   @Override
   protected void successfulAuthentication(
-      HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth)
-      throws IOException, ServletException {
+      HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth) {
     LOGGER.info("Successful authentication, generating token");
     String token =
         Jwts.builder()

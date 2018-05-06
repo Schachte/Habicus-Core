@@ -32,7 +32,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @IdClass(GoalsPK.class)
-public class Goal {
+public class Goal implements Cloneable {
 
   private int usersUserId;
   private int taskUnitCount;
@@ -215,6 +215,10 @@ public class Goal {
         && Objects.equals(labelColor, goals.labelColor)
         && Objects.equals(pledgeAmount, goals.pledgeAmount)
         && Objects.equals(goalComplete, goals.goalComplete);
+  }
+
+  public Object clone() throws CloneNotSupportedException {
+    return super.clone();
   }
 
   @Override

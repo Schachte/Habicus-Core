@@ -54,6 +54,9 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.1.RELEASE'
+    testCompile 'org.springframework.security:spring-security-test:5.0.4.RELEASE'
+    testCompile group: 'org.powermock', name: 'powermock-mockito-release-full', version: '1.5.4', ext: 'pom'
+
 }
 
 /**

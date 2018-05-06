@@ -22,10 +22,10 @@
  */
 package com.habicus.core.service.Goal;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.habicus.core.dao.repository.GoalRepository;
 import com.habicus.core.dao.repository.UserRepository;
 import com.habicus.core.exception.NoGoalsFoundException;
-import com.habicus.core.exception.StandardGoalException;
 import com.habicus.core.exception.StandardUserException;
 import com.habicus.core.model.Goal;
 import com.habicus.core.service.Security.SecurityService;
@@ -71,7 +71,7 @@ public class GoalService {
    */
   public Optional<Goal> addNewGoal(Principal principal, Goal goal) {
     goal =
-        Optional.of(goal)
+        Optional.ofNullable(goal)
             .map(Goal::retrieveInstance)
             .orElseThrow(() -> new NoGoalsFoundException("Invalid Goal Object"));
 
@@ -79,13 +79,6 @@ public class GoalService {
     goalRepository.save(goal);
     LOGGER.info("Goal object saved: " + goal.toString());
     return Optional.of(goal);
-  }
-
-  /** Assigns a particular requesting {@link com.habicus.core.model.User} to the new goal object */
-  private Goal assignUserToGoal(Principal principal, Goal goal) {
-    int userId = userService.verifyAndRetrieveUser(principal);
-    goal.setUsersUserId(userId);
-    return goal;
   }
 
   /**
@@ -97,26 +90,12 @@ public class GoalService {
    */
   public Goal removeGoal(Principal principal, int goalId) {
     Optional<Goal> requestedGoal = goalExists(goalId);
-    if (requestedGoal.isPresent() && requesterOwnsGoal(principal, requestedGoal)) {
+    if (requestedGoal.isPresent() && requesterOwnsGoal(principal, requestedGoal.get())) {
       goalRepository.delete(requestedGoal.get());
       return requestedGoal.get();
     }
     throw new StandardUserException(
         "Unable to remove the requested goal, either the user doesn't own the goal or the id is invalid");
-  }
-
-  /**
-   * Verifies that a requesting subject owns a particular goal that is being requested
-   *
-   * @param principal
-   * @param goal
-   * @return
-   */
-  private Boolean requesterOwnsGoal(Principal principal, Optional<Goal> goal) {
-    if (goal.isPresent()) {
-      return secService.getUserIdByPrincipal(principal) == goal.get().getUsersUserId();
-    }
-    throw new StandardUserException("Requesting user does not have access to goal");
   }
 
   /**
@@ -128,31 +107,25 @@ public class GoalService {
    * @return
    */
   public Optional<Goal> updateExistingGoal(Principal principal, Goal goal) {
-    try {
-      if (goalExists(goal.getGoalId()).isPresent()) {
-        Goal existingGoal =
-            goalRepository
-                .getGoalByGoalId(goal.getGoalId())
-                .orElseThrow(() -> new NoGoalsFoundException("Requested goal doesn't exist"));
+    if (goalExists(goal.getGoalId()).isPresent()) {
 
-        if (requesterOwnsGoal(principal, Optional.of(existingGoal))) {
-          existingGoal.setTitle(goal.getTitle());
-          existingGoal.setDescription(goal.getDescription());
-          existingGoal.setDueDate(goal.getDueDate());
-          existingGoal.setLabelColor(goal.getLabelColor());
-          existingGoal.setGoalInterval(goal.getGoalInterval());
-          existingGoal.setPledgeAmount(goal.getPledgeAmount());
-          existingGoal.setTaskUnitCount(goal.getTaskUnitCount());
-          goalRepository.save(existingGoal);
-        } else {
-          throw new StandardUserException("Permissions not granted on current goal.");
-        }
-        return Optional.of(existingGoal);
+      Goal existingGoal = goalRepository.getGoalByGoalId(goal.getGoalId()).get();
+
+      if (requesterOwnsGoal(principal, existingGoal)) {
+        existingGoal.setTitle(goal.getTitle());
+        existingGoal.setDescription(goal.getDescription());
+        existingGoal.setDueDate(goal.getDueDate());
+        existingGoal.setLabelColor(goal.getLabelColor());
+        existingGoal.setGoalInterval(goal.getGoalInterval());
+        existingGoal.setPledgeAmount(goal.getPledgeAmount());
+        existingGoal.setTaskUnitCount(goal.getTaskUnitCount());
+        goalRepository.save(existingGoal);
+      } else {
+        throw new StandardUserException("Permissions not granted on current goal.");
       }
-    } catch (Exception e) {
-      throw new StandardGoalException("Unable to update specified goal");
+      return Optional.of(existingGoal);
     }
-    throw new StandardGoalException("Unable to update specified goal");
+    throw new NoGoalsFoundException("Input Goal Is Null or Invalid!");
   }
 
   /**
@@ -161,7 +134,32 @@ public class GoalService {
    * @param goalId
    * @return {@link Goal} will be returned if exists, null otherwise
    */
-  private Optional<Goal> goalExists(int goalId) {
+  @VisibleForTesting
+  Optional<Goal> goalExists(int goalId) {
     return goalRepository.getGoalByGoalId(goalId);
+  }
+
+  /** Assigns a particular requesting {@link com.habicus.core.model.User} to the new goal object */
+  @VisibleForTesting
+  Goal assignUserToGoal(Principal principal, Goal goal) {
+    int userId = userService.verifyAndRetrieveUser(principal);
+    goal.setUsersUserId(userId);
+    return goal;
+  }
+
+  /**
+   * Verifies that a requesting subject owns a particular goal that is being requested
+   *
+   * @param principal
+   * @param goal
+   * @return
+   */
+  @VisibleForTesting
+  Boolean requesterOwnsGoal(Principal principal, Goal goal) {
+    Optional<Goal> optionalGoal = Optional.ofNullable(goal);
+    if (optionalGoal.isPresent()) {
+      return secService.getUserIdByPrincipal(principal) == optionalGoal.get().getUsersUserId();
+    }
+    throw new StandardUserException("Requesting user does not have access to goal");
   }
 }

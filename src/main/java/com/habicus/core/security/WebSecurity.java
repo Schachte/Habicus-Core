@@ -25,6 +25,7 @@ package com.habicus.core.security;
 import static com.habicus.core.security.SecurityConstants.SIGN_UP_URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -48,13 +49,15 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
   private BCryptPasswordEncoder bCryptPasswordEncoder;
 
   public WebSecurity(
-      UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+      @Qualifier("userService") UserDetailsService userDetailsService,
+      BCryptPasswordEncoder bCryptPasswordEncoder) {
     this.userDetailsService = userDetailsService;
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
   @Autowired
-  public void setUserDetailsService(UserDetailsService userDetailsService) {
+  public void setUserDetailsService(
+      @Qualifier("userService") UserDetailsService userDetailsService) {
     this.userDetailsService = userDetailsService;
   }
 

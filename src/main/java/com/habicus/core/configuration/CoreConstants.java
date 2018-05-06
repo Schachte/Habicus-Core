@@ -32,4 +32,6 @@ public class CoreConstants {
   public static final Integer SYSTEM_EXIT_ERROR = 1;
 
   public static final Integer SYSTEM_EXIT_OK = 0;
+
+  public static final String APPLICATION_DEVELOPMENT_PROFILE = "application-development.properties";
 }
